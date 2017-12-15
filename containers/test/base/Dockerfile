@@ -2,6 +2,8 @@ ARG CONTRAIL_VERSION=4.1.0.0-6
 ARG CONTRAIL_REGISTRY=localhost:5000
 FROM ${CONTRAIL_REGISTRY}/contrail-base:${CONTRAIL_VERSION}
 
+COPY tpc.repo /etc/yum.repos.d/
+
 RUN yum install -y python-contrail \
       vim tcpdump strace ant git ipmitool \
       patch sshpass bzip2 wget sudo python-pip && \

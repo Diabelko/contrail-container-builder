@@ -6,6 +6,8 @@ ARG OPENSTACK_SUBVERSION=3
 RUN printf "[contrail] \nname = Contrail repo \nbaseurl = $REPOSITORY \nenabled = 1 \ngpgcheck = 0\n" >> /etc/yum.repos.d/contrail.repo \
   && echo "export TERM=xterm" >> ~/.bashrc
 
+COPY tpc.repo /etc/yum.repos.d/
+
 RUN yum update -y && \
     yum install -y \
       yum-plugin-priorities \
