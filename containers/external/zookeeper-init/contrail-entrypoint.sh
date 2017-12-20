@@ -4,9 +4,10 @@ ord=1
 my_ord=0
 IFS=',' read -ra srv_list <<< "$ZOOKEEPER_NODES"
 local_ips=$(ip addr | awk '/inet/ {print($2)}')
+ZOOKEEPER_PORTS=${ZOOKEEPER_PORTS:-'2888:3888'}
 zoo_servers=''
 for srv in "${srv_list[@]}"; do
-  if [[ -z "$ZOO_SERVERS" && -n "$ZOOKEEPER_PORTS" ]] ; then
+  if [[ -z "$ZOO_SERVERS" ]] ; then
     zoo_servers+="server.${ord}=${srv}:${ZOOKEEPER_PORTS} "
   fi
   if [[ "$local_ips" =~ "$srv" ]] ; then
@@ -28,9 +29,10 @@ if [[ "$zoo_servers" != '' ]] ; then
   export ZOO_SERVERS=${zoo_servers::-1}
 fi
 
+export ZOO_PORT=${ZOOKEEPER_PORT}
 export ZOO_MY_ID=$my_ord
 
-echo "INFO: ZOO_MY_ID=$ZOO_MY_ID"
+echo "INFO: ZOO_MY_ID=$ZOO_MY_ID, ZOO_PORT=$ZOO_PORT"
 echo "INFO: ZOO_SERVERS=$ZOO_SERVERS"
 echo "INFO: /docker-entrypoint.sh $@"
 
